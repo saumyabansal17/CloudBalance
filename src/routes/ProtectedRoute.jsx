@@ -1,10 +1,8 @@
-import { Navigate } from "react-router-dom";
+import React  from 'react'
+import { Navigate} from "react-router-dom";
 
-const ProtectedRoute = ({isAuthenticated,role,children}) => {
-     if (!isAuthenticated && role!==localStorage.getItem("hasRole")) {
-    return <Navigate to="/"/>;
-  }
-  return children;
+const ProtectedRoute = ({ children}) => {
+  return (localStorage.getItem("isAuthenticated") === "true"? children:<Navigate to="/" replace/>);
 }
 
 export default ProtectedRoute

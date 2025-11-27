@@ -1,25 +1,51 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import AdminDashboard from "./pages/dashboards/AdminDashboard";
-import UserManagement from "./pages/dashboards/UserManagement";
+import Dashboard from "./pages/dashboards/Dashboard";
+import UserManagement from "./pages/dashboards/Users/UserManagement";
 import CostExplorer from "./pages/dashboards/CostExplorer";
 import Onboarding from "./pages/dashboards/Onboarding";
 import AwsServices from "./pages/dashboards/AwsServices";
 import Home from "./pages/Home";
-import React from 'react'
+import React, { useState } from "react";
+import AddUser from "./pages/dashboards/Users/AddUser";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import SidebarContextProvider from "./context/SidebarContext";
 
-function App() {
-  // const [count, setCount] = useState(0)
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("isAuthenticated") === "true";
+  });
+
+  const handleLogin = ()=>{
+    localStorage.setItem("isAuthenticated","true");
+    console.log("app");
+    setIsAuthenticated(true);
+  }
+
+  const handleLogout=()=>{
+     localStorage.setItem("isAuthenticated", "false");
+     setIsAuthenticated(false);
+  }
 
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />}>
-            <Route index element={<Home />} />
-            <Route path="user-management" element={<UserManagement />} />
+          <Route path="/" element={<Login onLogin={handleLogin}/>} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <SidebarContextProvider><Dashboard onLogout={handleLogout}/></SidebarContextProvider>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="/dashboard/user-management" replace/>} />
+            <Route path="user-management">
+              <Route index element={<UserManagement />} />
+              <Route path="add-user" element={<AddUser />} />
+            </Route>
             <Route path="cost-explorer" element={<CostExplorer />} />
             <Route path="onboarding" element={<Onboarding />} />
             <Route path="aws-services" element={<AwsServices />} />
@@ -29,6 +55,6 @@ function App() {
       </Router>
     </>
   );
-}
+};
 
 export default App;
