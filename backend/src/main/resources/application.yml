@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cloudbalance
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloudDB
+    username: saumya
+    password: sam1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
