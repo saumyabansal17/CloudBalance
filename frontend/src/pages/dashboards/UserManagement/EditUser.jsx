@@ -32,7 +32,7 @@ const EditUser = () => {
     };
     try {
       const users = await editUser(id, payload);
-      // console.log("User edited:", users.data);
+      console.log("User edited:", users.data);
       toast.success("User edited successfully!");
       navigate("/dashboard/user-management", { replace: true });
     } catch (error) {
@@ -48,6 +48,7 @@ const EditUser = () => {
 
   return (
     <>
+    <div className="px-6 pt-6">
       <h2 className="text-xl text-left font-semibold mb-6">Edit User</h2>
       <form
         onSubmit={handleSubmit}
@@ -145,6 +146,7 @@ const EditUser = () => {
           </button>
         </div>
       </form>
+      </div>
     </>
   );
 };

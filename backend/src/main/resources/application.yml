@@ -9,6 +9,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  app:
+    jwtSecret: "mysecretkeyismysecretkeynoneofyoursecretkey"
+    jwtExpirationMs: 9000000
 #    properties:
 #      hibernate:
 #        dialect: org.hibernate.dialect.MySQLDialect

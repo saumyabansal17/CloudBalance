@@ -33,6 +33,7 @@ const UserManagement = () => {
 
   return (
     <>
+    <div className="px-6 py-6">
       <h2 className="text-2xl text-left font-semibold text-gray-800 mb-6 ">
         Users
       </h2>
@@ -47,7 +48,7 @@ const UserManagement = () => {
             <span>Add New User</span>
           </button>
         </div>
-        <div className=" overflow-y-auto max-h-[73vh]">
+        <div className=" overflow-y-auto max-h-[65vh]">
           <table className="min-w-full rounded-sm">
             <thead className="bg-blue-100">
               <tr>
@@ -89,28 +90,12 @@ const UserManagement = () => {
                       <div className="w-fit bg-blue-100 text-gray-800 px-2 py-1 rounded-sm border-1 border-blue-800 text-xs">
                         {user.role}
                       </div>
-                      {/* <div className="flex flex-wrap gap-2">
-                        {user.roles && user.roles.length > 0 ? (
-                          user.roles.map((role, idx) => (
-                            <span
-                              key={idx}
-                              className="bg-blue-100 text-gray-800 px-2 py-1 rounded-sm border-1 border-blue-800 text-xs"
-                            >
-                              {role}
-                            </span>
-                          ))
-                        ) : (
-                          <span className="text-gray-500 text-s">
-                            No roles assigned
-                          </span>
-                        )}
-                      </div> */}
                     </td>
                     <td className="px-4 py-2 text-gray-700">
-                      {user.lastLogin
-                        ? new Date(user.lastLogin).toLocaleDateString() +
+                      {user.lastLoginTime
+                        ? new Date(user.lastLoginTime).toLocaleDateString() +
                           " " +
-                          new Date(user.lastLogin).toLocaleTimeString()
+                          new Date(user.lastLoginTime).toLocaleTimeString()
                         : "--"}
                     </td>
                     <td>
@@ -129,6 +114,7 @@ const UserManagement = () => {
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </>
   );

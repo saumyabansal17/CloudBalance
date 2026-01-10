@@ -3,6 +3,7 @@ package com.saumya.cloudbalance.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class Role {
     int id;
 
     @Column(nullable = false)
+            @NotBlank
     String role;
 }

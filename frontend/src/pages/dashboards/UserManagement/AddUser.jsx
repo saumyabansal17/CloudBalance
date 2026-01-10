@@ -13,7 +13,6 @@ const AddUser = () => {
     email: "",
     roleId: "",
     password: "",
-    // confirmPassword:""
   });
 
   const handleChange = (e) => {
@@ -44,6 +43,7 @@ const AddUser = () => {
 
   return (
     <>
+    <div className="px-6 pt-6">
       <h2 className="text-xl text-left font-semibold mb-6">Add New User</h2>
 
       <form
@@ -173,7 +173,7 @@ const AddUser = () => {
           </button>
         </div>
       </form>
-      {/* <ToastContainer/> */}
+      </div>
     </>
   );
 };

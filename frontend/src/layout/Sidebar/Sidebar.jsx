@@ -1,16 +1,46 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import "./Sidebar.scss";
+import { SidebarContext } from "../../context/SidebarContext";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import CloudQueueOutlinedIcon from "@mui/icons-material/CloudQueueOutlined";
-import {SidebarContext} from "../../context/SidebarContext";
+import "./Sidebar.scss";
+
+const sidebarItems = [
+  {
+    key: "user-management",
+    label: "User Management",
+    icon: <ManageAccountsOutlinedIcon />,
+    roles: ["ADMIN", "READ-ONLY"],
+    path: "user-management",
+  },
+  {
+    key: "onboarding",
+    label: "Onboarding",
+    icon: <GroupAddOutlinedIcon />,
+    roles: ["ADMIN"],
+    path: "onboarding",
+  },
+  {
+    key: "cost-explorer",
+    label: "Cost Explorer",
+    icon: <MonetizationOnOutlinedIcon />,
+    roles: ["ADMIN", "READ-ONLY", "CUSTOMER"],
+    path: "cost-explorer",
+  },
+  {
+    key: "aws-services",
+    label: "AWS Services",
+    icon: <CloudQueueOutlinedIcon />,
+    roles: ["ADMIN", "READ-ONLY", "CUSTOMER"],
+    path: "aws-services",
+  },
+];
 
 const Sidebar = () => {
   const role = localStorage.getItem("hasRole");
-
-  const {isOpen} = useContext(SidebarContext);
+  const { isOpen } = useContext(SidebarContext);
 
   const baseClasses =
     "font-normal flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#ecf5fb] transition-all ease-in-out duration-200";
@@ -18,72 +48,25 @@ const Sidebar = () => {
   return (
     <div className={`${isOpen ? "w-65 p-3" : "w-20 p-3"}`}>
       <aside className="flex flex-col gap-2 mt-3">
-        {(role === "READ ONLY" || role === "ADMIN") && (
-          <NavLink
-            to="user-management"
-            className={({ isActive }) =>
-              isActive
-                ? `${baseClasses} bg-[#ecf5fb] active ${isOpen ? "" : "w-14"}`
-                : `${baseClasses} hovers ${isOpen ? "" : "w-14"}`
-            }
-          >
-            <span className="icon transition-all ease-in-out duration-200">
-              <ManageAccountsOutlinedIcon />
-            </span>
-            <span className={`${isOpen ? "" : "hidden"}`}>
-              {" "}
-              User Management
-            </span>
-          </NavLink>
-        )}
-        {role === "ADMIN" && (
-          <>
+        {sidebarItems
+          .filter((item) => item.roles.includes(role))
+          .map((item) => (
             <NavLink
-              to="onboarding"
+              key={item.key}
+              to={item.path}
+              title={!isOpen ? item.label : ""} // tooltip when collapsed
               className={({ isActive }) =>
-                isActive
-                  ? `${baseClasses} bg-[#ecf5fb] active ${isOpen ? "" : "w-14"}`
-                  : `${baseClasses} hovers ${isOpen ? "" : "w-14"}`
+                `${baseClasses} ${
+                  isActive ? "bg-[#ecf5fb] active" : "hovers"
+                } ${isOpen ? "" : "w-14"}`
               }
             >
-              {/* {isActive} */}
-              {/* <div className="bg-blue-200 p-2 rounded-md flex gap-4 w-[100%]"> */}
               <span className="icon transition-all ease-in-out duration-200">
-                <GroupAddOutlinedIcon />
+                {item.icon}
               </span>
-              <span className={`${isOpen ? "" : "hidden"}`}> Onboarding</span>
-              {/* </div> */}
+              <span className={`${isOpen ? "" : "hidden"}`}>{item.label}</span>
             </NavLink>
-          </>
-        )}
-
-        <NavLink
-          to="cost-explorer"
-          className={({ isActive }) =>
-            isActive
-              ? `${baseClasses} bg-[#ecf5fb] active ${isOpen ? "" : "w-14"}`
-              : `${baseClasses} hovers ${isOpen ? "" : "w-14"}`
-          }
-        >
-          <span className="icon transition-all ease-in-out duration-200">
-            <MonetizationOnOutlinedIcon />
-          </span>
-          <span className={`${isOpen ? "" : "hidden"}`}> Cost Explorer</span>
-        </NavLink>
-
-        <NavLink
-          to="aws-services"
-          className={({ isActive }) =>
-            isActive
-              ? `${baseClasses} bg-[#ecf5fb] active ${isOpen ? "" : "w-14"}`
-              : `${baseClasses} hovers ${isOpen ? "" : "w-14"}`
-          }
-        >
-          <span className="icon transition-all ease-in-out duration-200">
-            <CloudQueueOutlinedIcon />
-          </span>
-          <span className={`${isOpen ? "" : "hidden"}`}> Aws Services</span>
-        </NavLink>
+          ))}
       </aside>
     </div>
   );

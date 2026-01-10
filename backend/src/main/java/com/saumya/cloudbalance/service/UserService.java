@@ -5,22 +5,23 @@ import com.saumya.cloudbalance.dto.UserDetailsDto;
 import com.saumya.cloudbalance.dto.UpdateUserDto;
 import com.saumya.cloudbalance.entity.Role;
 import com.saumya.cloudbalance.entity.User;
+import com.saumya.cloudbalance.exception.RoleNotFoundException;
+import com.saumya.cloudbalance.exception.UserNotFoundException;
 import com.saumya.cloudbalance.repository.RoleRepository;
 import com.saumya.cloudbalance.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
-    private final ObjectMapper mapper;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserDetailsDto> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     public UserDetailsDto getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException("User not found"));
         UserDetailsDto result = UserDetailsDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
@@ -53,23 +54,23 @@ public class UserService {
     }
 
     public String addUser(AddUserDto user) {
-        Role role=roleRepository.findById(user.getRoleId()).orElseThrow(()->new RuntimeException("Role Not Found"));
-
+        Role role=roleRepository.findById(user.getRoleId()).orElseThrow(()->new RoleNotFoundException("Role Not Found"));
+        System.out.println("hi");
         User newUser = User.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .role(role)
                 .build();
-
+        System.out.println("newUser");
         userRepository.save(newUser);
         return "User added";
     }
 
     public String updateUser(Long id, UpdateUserDto user) {
-        User oldUser=userRepository.findById(id).orElseThrow(()->new RuntimeException("User Not found"));
-        Role role=roleRepository.findById(user.getRoleId()).orElseThrow(()->new RuntimeException("Role Not found"));
+        User oldUser=userRepository.findById(id).orElseThrow(()->new UserNotFoundException("User Not found"));
+        Role role=roleRepository.findById(user.getRoleId()).orElseThrow(()->new RoleNotFoundException("Role Not found"));
 
         oldUser.setFirstName(user.getFirstName());
         oldUser.setLastName(user.getLastName());

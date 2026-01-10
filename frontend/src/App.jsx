@@ -1,4 +1,5 @@
 // import "./App.css";
+import React from "react"; 
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,18 +7,16 @@ import {
   Navigate,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/dashboards/DashboardLayout";
 import UserManagement from "./pages/dashboards/UserManagement/UserManagementLayout";
-import CostExplorer from "./pages/dashboards/CostExplorer";
-import Onboarding from "./pages/dashboards/Onboarding";
-import AwsServices from "./pages/dashboards/AwsServices";
-import Home from "./pages/Home";
-import React, { useState } from "react";
+import CostExplorer from "./pages/dashboards/CostExplorer/CostExplorer";
+import Onboarding from "./pages/dashboards/Onboarding/Onboarding";
 import AddUser from "./pages/dashboards/UserManagement/AddUser";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import SidebarContextProvider from "./context/SidebarContext";
 import EditUser from "./pages/dashboards/UserManagement/EditUser";
 import { ToastContainer } from "react-toastify";
+import DashboardLayout from "./pages/dashboards/DashboardLayout";
+import AwsServices from "./pages/dashboards/AwsServices/AwsServices";
 
 const App = () => {
   // const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -42,18 +41,19 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route
-            path="/dashboard"
+            path="/dashboard"           
             element={
               <ProtectedRoute>
                 <SidebarContextProvider>
-                  <Dashboard />
+                  <DashboardLayout />
                 </SidebarContextProvider>
               </ProtectedRoute>
             }
           >
             <Route
               index
-              element={<Navigate to="/dashboard/user-management" replace />}
+              // element={<Navigate to="/dashboard/user-management" replace />}
+              element={<DashboardLayout/>}
             />
             <Route path="user-management">
               <Route index element={<UserManagement />} />
