@@ -4,10 +4,11 @@ import AddCustomerPolicies from "./AddCustomerPolicies";
 import CreateCUR from "./CreateCUR";
 import StepFooter from "../../../components/StepFooter";
 import { toast } from "react-toastify";
+import { addAccount } from "../../../api/api";
 
 const Onboarding = () => {
   const [formData, setFormData] = useState({
-    roleArn: "",
+    awsArn: "",
     accountName: "",
     accountId: "",
   });
@@ -16,7 +17,7 @@ const Onboarding = () => {
 
   const isStepOneValid = () => {
     return (
-      formData.roleArn.trim() !== "" &&
+      formData.awsArn.trim() !== "" &&
       formData.accountName.trim() !== "" &&
       formData.accountId.trim() !== ""
     );
@@ -38,9 +39,23 @@ const Onboarding = () => {
   };
 
   const handleCancel = () => {};
-  
-  const handleSubmit = () => {
-    console.log("Form Submiited", formData);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      accountId: parseInt(formData.accountId),
+    };
+    try {
+      const accounts = await addAccount(payload);
+      console.log("payload", payload);
+      console.log("Account created:", accounts.data);
+      toast.success("Account onboarded successfully!");
+      // navigate("/dashboard/user-management", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log("Form Submiited", payload);
   };
 
   return (

@@ -80,3 +80,8 @@ export const fetchAssociatedAccs = async (id) => {
   const response = await privateApi.get(`/account/get/${id}`, {});
   return response;
 };
+
+export const addAccount = async (formData) => {
+  const response = await privateApi.post("/account", formData, {});
+  return response;
+};

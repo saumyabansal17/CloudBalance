@@ -16,7 +16,7 @@ import lombok.Setter;
 public class AddAccountDto {
 
     @NotBlank
-    String awsARN;
+    String awsArn;
 
     @NotBlank
     String accountName;
@@ -24,6 +24,6 @@ public class AddAccountDto {
     @NotNull
     @Min(1000000000L)
     @Max(9999999999L)
-    Long awsId;
+    Long accountId;
 
 }

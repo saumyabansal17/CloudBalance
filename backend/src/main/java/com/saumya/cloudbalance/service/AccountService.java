@@ -20,9 +20,9 @@ public class AccountService {
 
     public String addAccount(AddAccountDto req){
         Account newAcc = Account.builder()
-                .awsARN(req.getAwsARN())
+                .awsARN(req.getAwsArn())
                 .accountName(req.getAccountName())
-                .awsId(req.getAwsId())
+                .awsId(req.getAccountId())
                 .build();
         System.out.println("newUser");
         accountRepository.save(newAcc);

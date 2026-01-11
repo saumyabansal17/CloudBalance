@@ -83,8 +83,8 @@ const CreateIAMRole = ({ formData, handleChange }) => {
         <div className="flex pl-8 gap-2 items-center justify-between">
           <FormInput
             label="Enter the IAM Role ARN"
-            name="roleArn"
-            value={formData.roleArn}
+            name="awsArn"
+            value={formData.awsArn}
             onChange={handleChange}
             required={true}
           />

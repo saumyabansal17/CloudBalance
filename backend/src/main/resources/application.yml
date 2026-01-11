@@ -2,9 +2,18 @@ spring:
   application:
     name: cloudbalance
   datasource:
+#    mysql:
     url: jdbc:mysql://localhost:3306/cloudDB
     username: saumya
     password: sam1234
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+
+#    snowflake:
+#      url: jdbc:snowflake://IVLLMDL-CG35370.snowflakecomputing.com/?warehouse=DEMO_WH&db=DEMO_DB
+#      username: SAUMYA17
+#      password: "sAm@1234567890"  # wrap in quotes for special chars
+#      driver-class-name: net.snowflake.client.jdbc.SnowflakeDriver
+
   jpa:
     hibernate:
       ddl-auto: update
