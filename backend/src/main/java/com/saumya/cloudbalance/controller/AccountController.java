@@ -35,8 +35,8 @@ public class AccountController {
 
 //    @PreAuthorize("hasAnyRole('ADMIN','READ-ONLY')")
     @GetMapping("/get/{id}")
-    public ResponseEntity<AccountDetailsDto> getAccount(@PathVariable Long id){
-        AccountDetailsDto res=accountService.getAccount(id);
+    public ResponseEntity<List<AccountDetailsDto>> getAccount(@PathVariable Long id){
+        List<AccountDetailsDto> res=accountService.getAccountByUser(id);
         return ResponseEntity.ok(res);
     }
 }

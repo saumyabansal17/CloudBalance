@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +27,8 @@ public class UpdateUserDto {
 
     @NotNull
     int roleId;
+
+    List<Long> accountIds;
 
 //    String role;
 }

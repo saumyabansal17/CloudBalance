@@ -35,7 +35,7 @@ privateApi.interceptors.response.use(
       toast.error("Session expired. Please login again.");
       localStorage.clear();
       setTimeout(() => {
-        window.location.href = "/";
+        // window.location.href = "/";
       }, 2000);
     } 
     else if (status === 403) {
@@ -68,5 +68,15 @@ export const addUser = async (formData) => {
 
 export const editUser = async (id, formData) => {
   const response = await privateApi.put(`/users/update/${id}`, formData, {});
+  return response;
+};
+
+export const fetchAccount = async () => {
+  const response = await privateApi.get("/account", {});
+  return response;
+};
+
+export const fetchAssociatedAccs = async (id) => {
+  const response = await privateApi.get(`/account/get/${id}`, {});
   return response;
 };

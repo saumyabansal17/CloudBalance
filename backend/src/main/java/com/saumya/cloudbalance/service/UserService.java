@@ -3,16 +3,19 @@ package com.saumya.cloudbalance.service;
 import com.saumya.cloudbalance.dto.AddUserDto;
 import com.saumya.cloudbalance.dto.UserDetailsDto;
 import com.saumya.cloudbalance.dto.UpdateUserDto;
+import com.saumya.cloudbalance.entity.Account;
 import com.saumya.cloudbalance.entity.Role;
 import com.saumya.cloudbalance.entity.User;
 import com.saumya.cloudbalance.exception.RoleNotFoundException;
 import com.saumya.cloudbalance.exception.UserNotFoundException;
+import com.saumya.cloudbalance.repository.AccountRepository;
 import com.saumya.cloudbalance.repository.RoleRepository;
 import com.saumya.cloudbalance.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
 
     public List<UserDetailsDto> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -56,12 +60,19 @@ public class UserService {
     public String addUser(AddUserDto user) {
         Role role=roleRepository.findById(user.getRoleId()).orElseThrow(()->new RoleNotFoundException("Role Not Found"));
         System.out.println("hi");
+        List<Account> acc = new ArrayList<>();
+        if(role.getId()==3 && !user.getAccountIds().isEmpty()){
+            acc=accountRepository.findAllByAwsIdIn(user.getAccountIds());
+            System.out.println(acc);
+        }
+
         User newUser = User.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .role(role)
+                .accounts(acc)
                 .build();
         System.out.println("newUser");
         userRepository.save(newUser);
@@ -76,6 +87,20 @@ public class UserService {
         oldUser.setLastName(user.getLastName());
         oldUser.setEmail(user.getEmail());
         oldUser.setRole(role);
+
+        if (user.getRoleId() == 3) {
+//            if (user.getAccountIds() == null || user.getAccountIds().isEmpty()) {
+//                throw new RuntimeException("Customer must have at least one account");
+//            }
+
+            List<Account> accounts =
+                    accountRepository.findAllByAwsIdIn(user.getAccountIds());
+
+            oldUser.setAccounts(accounts);
+
+        } else {
+            oldUser.getAccounts().clear();
+        }
 
         userRepository.save(oldUser);
         return "User updated";

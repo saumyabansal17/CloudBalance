@@ -41,15 +41,18 @@ public class AccountService {
                 .toList();
     }
 
-    public AccountDetailsDto getAccount(Long id) {
+    public List<AccountDetailsDto> getAccountByUser(Long id) {
         System.out.println(id);
-        Account account = accountRepository.findById(id).orElseThrow(()->new RuntimeException("Account not found"));
-        System.out.println(account);
-        AccountDetailsDto result = AccountDetailsDto.builder()
-                .awsId(account.getAwsId())
-                .accountName(account.getAccountName())
-                .build();
-        return result;
+        List<Account> accounts = accountRepository.findByUsers_Id(id);
+        System.out.println(accounts);
+        return accounts.stream()
+                .map(account ->
+                        AccountDetailsDto.builder()
+                                .accountName(account.getAccountName())
+                                .awsId(account.getAwsId())
+                                .build()
+                )
+                .toList();
     }
 
 }
