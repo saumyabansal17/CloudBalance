@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TuneIcon from "@mui/icons-material/Tune";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -6,16 +6,20 @@ import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import RestartAltOutlinedIcon from "@mui/icons-material/RestartAltOutlined";
 import FilterItem from "../../../components/FilterItem";
 import Chart from "./Chart";
-import { filters, groupByOptions } from "./utils";
+import { filters, groupByApiMap, groupByOptions } from "./utils";
 import CostTable from "./CostTable";
 import DateFilter from "./DateFilter";
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import { fetchCostReport } from "../../../api/api";
 
 const CostExplorer = () => {
   const [selected, setSelected] = useState("Account ID");
   const [selectedChart, setSelectedChart] = useState("bar");
   const [collapsed, setCollapsed] = useState(false);
-
+  const [startDate, setStartDate] = useState("2025-01-01");
+  const [endDate, setEndDate] = useState("2025-05-31");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
 
   const remainingOptions = groupByOptions.filter(
@@ -38,8 +42,28 @@ const CostExplorer = () => {
   };
 
   const handleDateApply = ({ startDate, endDate }) => {
-  console.log("Applied range:", startDate, endDate);
-};
+    console.log("Applied range:", startDate, endDate);
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
+
+
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      try {
+        const apiGroupBy = groupByApiMap[selected];
+        const reportData = await fetchCostReport(startDate, endDate,apiGroupBy);
+        setData(reportData);
+      } catch (error) {
+        console.error("Error fetching cost report:", error);
+      }
+      setLoading(false);
+    };
+
+    getData();
+  }, [startDate, endDate,selected]);
 
   return (
     <>
@@ -84,7 +108,7 @@ const CostExplorer = () => {
                   className="cursor-pointer border border-[#cfdde5] rounded-md px-3 py-2 bg-white h-10 flex items-center gap-1 text-[#0a3ca2]"
                 >
                   <p className=" font-semibold">More</p>
-                  <ArrowDropDownOutlinedIcon/>
+                  <ArrowDropDownOutlinedIcon />
                 </div>
 
                 {showMore && (
@@ -127,35 +151,35 @@ const CostExplorer = () => {
             <div className="flex justify-between items-center">
               <p>Costs($)</p>
               <div className="flex gap-2">
-              <DateFilter onApply={handleDateApply}/>
+                <DateFilter onApply={handleDateApply} />
 
-              <div className="flex border border-[#E6E6E6] rounded-sm">
-                {chartOptions.map(({ type, icon: Icon }) => (
-                  <button
-                    key={type}
-                    onClick={() => setSelectedChart(type)}
-                    className={`p-1 border-[#E6E6E6] cursor-pointer ${
-                      selectedChart === type
-                        ? "bg-[#eef6fe] text-[#0a3ca2]"
-                        : "bg-white text-gray-600"
-                    }`}
-                  >
-                    <Icon />
-                  </button>
-                ))}
-              </div>
+                <div className="flex border border-[#E6E6E6] rounded-sm">
+                  {chartOptions.map(({ type, icon: Icon }) => (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedChart(type)}
+                      className={`p-1 border-[#E6E6E6] cursor-pointer ${
+                        selectedChart === type
+                          ? "bg-[#eef6fe] text-[#0a3ca2]"
+                          : "bg-white text-gray-600"
+                      }`}
+                    >
+                      <Icon />
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className="border border-[#E6E6E6] rounded-sm px-2 py-2 mt-4">
-              <Chart type={chartMap[selectedChart]} />
+              <Chart type={chartMap[selectedChart]} data={data} startDate={startDate} endDate={endDate}/>
             </div>
             <div className="border border-[#869bc3] rounded-sm mt-6 bg-[#dbe6f8]">
               <p className="py-4 text-center text-[#1945b7]">
                 We are showing up to 1000 records by cost
               </p>
             </div>
-            <CostTable groupByLabel={selected} />
+            <CostTable groupByLabel={selected} data={data} startDate={startDate} endDate={endDate}/>
           </div>
 
           <div className={`overflow-hidden ${collapsed ? "w-64" : "w-0"}`}>

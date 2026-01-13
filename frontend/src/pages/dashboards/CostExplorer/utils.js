@@ -119,13 +119,30 @@ export const groupByOptions = [
     "Region",
     "Purchase Option",
     "API Operation",
-    "Resource",
     "Charge Type",
     "Availabilityzone",
     "Tenancy",
     "Legal Entity",
     "Billing Entity"
   ];
+
+export const groupByApiMap = {
+  "Resource":"RESOURCE",
+    "Instance Type":"INSTANCE_TYPE",
+    "Service":"SERVICE",
+    "Account ID":"ACCOUNT_ID",
+    "Usage Type":"USAGE_TYPE",
+    "Platform":"PLATFORM",
+    "Region":"REGION",
+    "Purchase Option":"PURCHASE_OPTION",
+    "API Operation":"API_OPERATION",
+    "Charge Type":"CHARGE_TYPE",
+    "Availabilityzone":"AVAILABILITY_ZONE",
+    "Tenancy":"TENANCY",
+    "Legal Entity":"LEGAL_ENTITY",
+    "Billing Entity":"BILLING_ENTITY"
+};
+
 
 export const filters = [
     { label: "Service" },
@@ -139,6 +156,7 @@ export const filters = [
     { label: "API Operation" },
     { label: "Resource" },
   ];
+
 
 export const tableData = {
   columns: [
@@ -166,4 +184,47 @@ export const tableData = {
   grandTotal: [112575.82, 140810.90, 146451.69, 145951.10, 136922.58, 126343.99, 131514.16, 91081.42],
   grandSum: 1031651.66,
 };
+
+export const costData = {
+  columns: [
+    "May 2025",
+    "Jun 2025",
+    "Jul 2025",
+    "Aug 2025",
+    "Sep 2025",
+    "Oct 2025",
+    "Nov 2025",
+    "Dec 2025",
+  ],
+  rows: [
+    {
+      key: "831059512818",
+      values: [108088.47, 135308.22, 140468.46, 140112.35, 130312.49, 118640.07, 124029.83, 85493.53],
+    },
+    {
+      key: "039612865345",
+      values: [1900.58, 2570.53, 3316.24, 3116.31, 3757.38, 5007.87, 5190.54, 4261.76],
+    },
+  ],
+};
+
+// utils/dateUtils.js
+export const getMonthsBetween = (start, end) => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const months = [];
+
+  let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+
+  while (current <= endDate) {
+    const monthStr = `${current.getFullYear()}-${(current.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}`; // format YYYY-MM
+    months.push(monthStr);
+    current.setMonth(current.getMonth() + 1);
+  }
+
+  return months;
+};
+
 

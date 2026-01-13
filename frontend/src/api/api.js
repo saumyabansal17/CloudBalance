@@ -85,3 +85,12 @@ export const addAccount = async (formData) => {
   const response = await privateApi.post("/account", formData, {});
   return response;
 };
+
+export const fetchCostReport = async (startDate, endDate,groupBy) => {
+  const { data } = await privateApi.get("/report", {
+    params: { startDate, endDate,groupBy }
+  });
+  return data;
+};
+
+
