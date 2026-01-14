@@ -1,9 +1,5 @@
 package com.saumya.cloudbalance.dto;
 
-import com.saumya.cloudbalance.entity.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +7,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class UserDetailsDto{
+public class GetUserResponseDto {
     Long id;
 
     String firstName;

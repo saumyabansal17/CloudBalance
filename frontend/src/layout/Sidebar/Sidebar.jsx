@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
+import "./Sidebar.scss";
 import { NavLink } from "react-router-dom";
 import { SidebarContext } from "../../context/SidebarContext";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import CloudQueueOutlinedIcon from "@mui/icons-material/CloudQueueOutlined";
-import "./Sidebar.scss";
+import {useSelector} from "react-redux"
 
 const sidebarItems = [
   {
@@ -39,7 +40,9 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-  const role = localStorage.getItem("hasRole");
+  // const role = localStorage.getItem("hasRole");
+  const {user}=useSelector((state)=>state.auth);
+  const role=user?.role;
   const { isOpen } = useContext(SidebarContext);
 
   const baseClasses =
@@ -54,7 +57,7 @@ const Sidebar = () => {
             <NavLink
               key={item.key}
               to={item.path}
-              title={!isOpen ? item.label : ""} // tooltip when collapsed
+              title={!isOpen ? item.label : ""} 
               className={({ isActive }) =>
                 `${baseClasses} ${
                   isActive ? "bg-[#ecf5fb] active" : "hovers"

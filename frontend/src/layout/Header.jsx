@@ -6,11 +6,13 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import {SidebarContext} from "../context/SidebarContext";
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import {useSelector} from "react-redux"
 
 const Header = () => {
   const navigate = useNavigate();
-  const name=localStorage.getItem("name").toUpperCase();
-  
+  const {user}=useSelector((state)=>state.auth);
+  const name=user?.name.toUpperCase();
+  console.log("userredux",user);
 
   const {isOpen, setIsOpen} = useContext(SidebarContext)
   const handleClick=()=>{

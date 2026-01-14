@@ -35,9 +35,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/auth/**","/api/report/**").permitAll()
                         .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "READ-ONLY")
-                        .requestMatchers("/api/account/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
@@ -64,7 +64,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of("http://localhost:5173"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"));
         config.setAllowedHeaders(List.of("*"));
 //        config.setAllowCredentials(true);
 

@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/Cloudkeeper_New.svg";
 import { login } from "../api/api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import  {fetchUserProfile} from "../redux/auth/authActions";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
 
   const [userData, setUserData] = useState({
     email: "",
@@ -20,14 +23,15 @@ const Login = () => {
     try {
       const res = await login(userData);
       console.log(res);
-
       toast.success("Loggin succesful");
-
-      localStorage.setItem("isAuthenticated", "true");
+      
+      // localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("token",res.data.token);
-      localStorage.setItem("hasRole", res.data.role);
-      localStorage.setItem("name",res.data.name)
+      // localStorage.setItem("hasRole", res.data.role);
+      // localStorage.setItem("name",res.data.name);
+      dispatch(fetchUserProfile());
       navigate("/dashboard",{replace:true});
+
     } catch (err) {
       console.log(err);
       if (err.status === 404) {

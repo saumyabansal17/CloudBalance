@@ -34,6 +34,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String token = jwtUtil.getJwtFromHeader(request);
 
+            String path = request.getServletPath();
+
+            if (
+                    path.startsWith("/api/auth/") ||
+                            path.startsWith("/api/report")
+            ) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+
             if (token != null) {
 
                 if (!jwtUtil.validateJwtToken(token)) {

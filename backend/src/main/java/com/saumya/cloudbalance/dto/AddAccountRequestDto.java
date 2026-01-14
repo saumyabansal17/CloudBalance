@@ -1,6 +1,7 @@
 package com.saumya.cloudbalance.dto;
 
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,27 +9,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UpdateUserDto {
-    @NotBlank
-    String firstName;
+public class AddAccountRequestDto {
 
     @NotBlank
-    String lastName;
+    String awsArn;
 
     @NotBlank
-            @Email
-    String email;
+    String accountName;
 
     @NotNull
-    int roleId;
+    @Min(1000000000L)
+    @Max(9999999999L)
+    Long accountId;
 
-    List<Long> accountIds;
-
-//    String role;
 }

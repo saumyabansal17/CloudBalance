@@ -3,10 +3,11 @@ package com.saumya.cloudbalance.service;
 import com.saumya.cloudbalance.dto.LoginRequestDto;
 import com.saumya.cloudbalance.dto.LoginResponseDto;
 import com.saumya.cloudbalance.entity.User;
-import com.saumya.cloudbalance.exception.UserNotFoundException;
+import com.saumya.cloudbalance.exception.CustomException;
 import com.saumya.cloudbalance.repository.UserRepository;
 import com.saumya.cloudbalance.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,12 +36,10 @@ public class AuthService {
 
             User user = userRepository
                     .findByEmail(request.getEmail())
-                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+                    .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
 
             LoginResponseDto res = new LoginResponseDto();
             res.setToken(token);
-            res.setName(user.getFirstName() + " " + user.getLastName());
-            res.setRole(user.getRole().getRole());
             user.setLastLoginTime(LocalDateTime.now());
             userRepository.save(user);
             return res;

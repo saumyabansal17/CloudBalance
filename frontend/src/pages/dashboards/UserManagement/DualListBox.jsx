@@ -29,7 +29,6 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
 
   return (
     <div className="border border-[#E6E6E6] rounded-sm w-[400px] bg-white">
-      {/* Header */}
       <div className="flex justify-between text-sm bg-[#eef6fe] p-2 z-10">
         <span className="font-bold">{title}</span>
         <span className="text-[#0a3ca2] font-semibold">
@@ -37,7 +36,6 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
         </span>
       </div>
 
-      {/* Search */}
       {items.length > 0 && (
          <div className="flex items-center gap-2 px-4 py-2 border-b border-[#E6E6E6]">
     <SearchOutlinedIcon className="text-gray-400 text-lg" />
@@ -51,7 +49,6 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
   </div>
       )}
 
-      {/* Select All */}
       {items.length > 0 && (
         <label className="flex items-center gap-2 text-sm border-b border-[#E6E6E6] px-2 py-3 font-medium cursor-pointer">
           <input
@@ -67,7 +64,6 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
         </label>
       )}
 
-      {/* List */}
       <div className="h-60 overflow-auto">
         {filteredItems.length === 0 ? (
             <div className="flex flex-col items-center mt-30">

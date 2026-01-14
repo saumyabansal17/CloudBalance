@@ -5,9 +5,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { fetchAll } from "../../../api/api";
+import { useSelector } from "react-redux";
 
 const UserManagement = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const isAdmin = user?.role === "ADMIN";
 
   const handleClick = () => navigate("add-user");
 
@@ -41,7 +44,14 @@ const UserManagement = () => {
           <div className="text-left ">
             <button
               onClick={handleClick}
-              className="flex items-center gap-1 cursor-pointer bg-[#0a3ca2] mb-4 text-white px-3 py-2 rounded hover:bg-blue-800 text-md"
+              disabled={!isAdmin}
+              className={`flex items-center gap-1 mb-4 px-3 py-2 rounded text-md
+                      ${
+                        isAdmin
+                          ? "bg-[#0a3ca2] text-white hover:bg-blue-800 cursor-pointer"
+                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      }
+                    `}
             >
               <AddIcon />
               <span>Add New User</span>
@@ -101,8 +111,14 @@ const UserManagement = () => {
                       </td>
                       <td>
                         <EditIcon
-                          className="text-[#0a3ca2] cursor-pointer"
+                          className={`${
+                            isAdmin
+                              ? "text-[#0a3ca2] cursor-pointer"
+                              : "text-gray-400 cursor-not-allowed"
+                          }`}
                           onClick={() => {
+                            if (!isAdmin) return;
+
                             navigate("/dashboard/user-management/edit-user", {
                               state: user,
                             });

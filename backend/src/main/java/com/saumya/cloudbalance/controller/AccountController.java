@@ -1,8 +1,7 @@
 package com.saumya.cloudbalance.controller;
 
 import com.saumya.cloudbalance.dto.AccountDetailsDto;
-import com.saumya.cloudbalance.dto.AddAccountDto;
-import com.saumya.cloudbalance.dto.UserDetailsDto;
+import com.saumya.cloudbalance.dto.AddAccountRequestDto;
 import com.saumya.cloudbalance.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class AccountController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<String> addAccount(@Valid @RequestBody AddAccountDto req){
+    public ResponseEntity<String> addAccount(@Valid @RequestBody AddAccountRequestDto req){
         String res=accountService.addAccount(req);
         return ResponseEntity.ok(res);
     }

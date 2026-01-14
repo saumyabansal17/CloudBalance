@@ -93,4 +93,9 @@ export const fetchCostReport = async (startDate, endDate,groupBy) => {
   return data;
 };
 
+export const getProfile = async () => {
+  const response = await privateApi.get("/users/profile", {});
+  return response;
+};
+
 

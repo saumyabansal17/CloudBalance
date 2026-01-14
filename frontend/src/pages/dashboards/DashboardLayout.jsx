@@ -3,12 +3,27 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../../layout/Sidebar/Sidebar";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
+import Loader from "../../components/Loader";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserProfile } from "../../redux/auth/authActions";
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const role = localStorage.getItem("hasRole");
+  // const role = localStorage.getItem("hasRole");
+  
   const hasRedirected = useRef(false);
+  const dispatch=useDispatch();
+
+  const { user, loading } = useSelector((state) => state.auth);
+  const role=user?.role;
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, user]);
+
 
   useEffect(() => {
     console.log("dashboard mounted");
@@ -23,6 +38,14 @@ const DashboardLayout = () => {
     }
    
   }, [location.pathname, role, navigate]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex justify-center items-center h-screen w-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>

@@ -12,4 +12,13 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     List<Account> findByUsers_Id(Long userId);
 
+    boolean existsByAwsARN(String awsARN);
+
+    boolean existsByAccountName(String accountName);
+
+    boolean existsByAwsId(Long awsId);
+
+    long countByAwsIdIn(List<Long> awsIds);
+
+
 }
