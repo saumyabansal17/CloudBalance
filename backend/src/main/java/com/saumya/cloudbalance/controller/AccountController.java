@@ -5,8 +5,10 @@ import com.saumya.cloudbalance.dto.AddAccountRequestDto;
 import com.saumya.cloudbalance.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.snowflake.client.jdbc.internal.google.rpc.context.AttributeContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +38,13 @@ public class AccountController {
     @GetMapping("/get/{id}")
     public ResponseEntity<List<AccountDetailsDto>> getAccount(@PathVariable Long id){
         List<AccountDetailsDto> res=accountService.getAccountByUser(id);
+        return ResponseEntity.ok(res);
+    }
+
+
+    @GetMapping("/info")
+    public ResponseEntity<List<AccountDetailsDto>> getAccounts(Authentication authentication){
+        List<AccountDetailsDto> res=accountService.getAccountInfo(authentication);
         return ResponseEntity.ok(res);
     }
 }

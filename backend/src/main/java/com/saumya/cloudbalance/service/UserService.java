@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,21 +30,25 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
 
-    public List<GetUserResponseDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
+    public List<GetUserResponseDto> getAllUsers(Authentication authentication) {
+//        List<User> users = userRepository.findAll();
+        String loggedInEmail = authentication.getName();
+
+        return userRepository.findAll().stream()
+                .filter(user -> !user.getEmail().equalsIgnoreCase(loggedInEmail))
                 .map(user ->
-                    GetUserResponseDto.builder()
-                            .id(user.getId())
-                            .firstName(user.getFirstName())
-                            .lastName(user.getLastName())
-                            .email(user.getEmail())
-                            .lastLoginTime(user.getLastLoginTime())
-                            .roleId(user.getRole().getId())
-                            .role(user.getRole().getRole())
-                            .build()
-                    )
+                        GetUserResponseDto.builder()
+                                .id(user.getId())
+                                .firstName(user.getFirstName())
+                                .lastName(user.getLastName())
+                                .email(user.getEmail())
+                                .lastLoginTime(user.getLastLoginTime())
+                                .roleId(user.getRole().getId())
+                                .role(user.getRole().getRole())
+                                .build()
+                )
                 .toList();
+
     }
 
     public GetUserResponseDto getUser(Long id) {
@@ -97,7 +102,10 @@ public class UserService {
     public String updateUser(Long id, UpdateUserRequestDto user) {
         User oldUser=userRepository.findById(id).orElseThrow(()->new CustomException("User not found", HttpStatus.NOT_FOUND));
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+        if (existingUser.isPresent()
+                && !existingUser.get().getId().equals(oldUser.getId())) {
             throw new CustomException("Email already exists", HttpStatus.CONFLICT);
         }
 

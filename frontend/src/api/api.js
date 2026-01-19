@@ -40,7 +40,7 @@ privateApi.interceptors.response.use(
     } 
     else if (status === 403) {
       toast.error("You are not authorized to perform this action.");
-    } else if (status >= 500) {
+    } else if (status === 500) {
       toast.error("Server error. Please try later.");
     } 
     else {
@@ -76,6 +76,11 @@ export const fetchAccount = async () => {
   return response;
 };
 
+export const fetchMyAccount = async () => {
+  const response = await privateApi.get("/account/info", {});
+  return response;
+};
+
 export const fetchAssociatedAccs = async (id) => {
   const response = await privateApi.get(`/account/get/${id}`, {});
   return response;
@@ -86,16 +91,34 @@ export const addAccount = async (formData) => {
   return response;
 };
 
-export const fetchCostReport = async (startDate, endDate,groupBy) => {
-  const { data } = await privateApi.get("/report", {
-    params: { startDate, endDate,groupBy }
-  });
+
+export const fetchCostReport = async (
+  startDate,
+  endDate,
+  groupBy,
+  filters = {}
+) => {
+  const payload = {
+    startDate,
+    endDate,
+    groupBy,
+    filters
+  };
+
+  const { data } = await privateApi.post("/report", payload);
   return data;
 };
+
 
 export const getProfile = async () => {
   const response = await privateApi.get("/users/profile", {});
   return response;
 };
+
+export const fetchFilters = async () => {
+  const { data } = await privateApi.get("/report");
+  return data;
+};
+
 
 

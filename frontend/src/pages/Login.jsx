@@ -33,11 +33,8 @@ const Login = () => {
       navigate("/dashboard",{replace:true});
 
     } catch (err) {
-      console.log(err);
-      if (err.status === 404) {
-        toast.error("User not found");
-      } else if (err.status === 401) {
-        toast.error("Password incorrect");
+      if (err.status === 401) {
+        toast.error(err.response.data.message);
       } else {
         toast.error("Something went wrong");
       }
@@ -66,7 +63,7 @@ const Login = () => {
         <div className="flex-1 flex flex-col items-center justify-center ">
           <img src={logo} alt="CloudKeeper" className="mb-10" />
 
-          <form className="bg-white text-center rounded-l w-[500px]">
+          <form className="bg-white text-center rounded-l w-[500px]" onSubmit={handleLogin}>
             <div className="mb-10 text-left">
               <label htmlFor="email">Email</label>
               <br />
@@ -95,15 +92,14 @@ const Login = () => {
             </div>
 
             <button
-              // type="button"
-              onClick={handleLogin}
+              type="submit"
+              // onClick={handleLogin}
               className="bg-[#4398d7] mt-3 text-white w-full h-13 py-2 rounded-sm cursor-pointer hover:shadow-[6px_13px_15px_#0a3ca24a] transition"
             >
               LOGIN
             </button>
           </form>
         </div>
-        <div className="h-full bg-gray-50">Footer</div>
       </div>
     </>
   );

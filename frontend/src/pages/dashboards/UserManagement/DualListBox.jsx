@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import FolderCopyOutlinedIcon from "@mui/icons-material/FolderCopyOutlined";
 
 const DualListBox = ({ title, items, selected, setSelected }) => {
   const [search, setSearch] = useState("");
@@ -13,9 +13,7 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
 
   const toggleItem = (id) => {
     setSelected((prev) =>
-      prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
 
@@ -37,16 +35,16 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
       </div>
 
       {items.length > 0 && (
-         <div className="flex items-center gap-2 px-4 py-2 border-b border-[#E6E6E6]">
-    <SearchOutlinedIcon className="text-gray-400 text-lg" />
-    <input
-      type="text"
-      placeholder="Search"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="w-full text-sm text-gray-700 outline-none"
-    />
-  </div>
+        <div className="flex items-center gap-2 px-4 py-2 border-b border-[#E6E6E6]">
+          <SearchOutlinedIcon className="text-gray-400 text-lg" />
+          <input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full text-sm text-gray-700 outline-none"
+          />
+        </div>
       )}
 
       {items.length > 0 && (
@@ -66,11 +64,9 @@ const DualListBox = ({ title, items, selected, setSelected }) => {
 
       <div className="h-60 overflow-auto">
         {filteredItems.length === 0 ? (
-            <div className="flex flex-col items-center mt-30">
-                <FolderCopyOutlinedIcon className="text-blue-800"/>
-          <p className="text-center font-medium">
-            No Account IDs
-          </p>
+          <div className="flex flex-col items-center mt-30">
+            <FolderCopyOutlinedIcon className="text-blue-800" />
+            <p className="text-center font-medium">No Account IDs</p>
           </div>
         ) : (
           filteredItems.map((item) => (

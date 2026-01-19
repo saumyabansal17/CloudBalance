@@ -4,13 +4,14 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import RestartAltOutlinedIcon from "@mui/icons-material/RestartAltOutlined";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import FilterItem from "../../../components/FilterItem";
+import AccountDropdown from "../../../components/AccountDropdown";
 import Chart from "./Chart";
-import { filters, groupByApiMap, groupByOptions } from "./utils";
 import CostTable from "./CostTable";
 import DateFilter from "./DateFilter";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import { fetchCostReport } from "../../../api/api";
+import { groupByApiMap, groupByOptions } from "./utils";
+import { fetchCostReport, fetchFilters } from "../../../api/api";
 
 const CostExplorer = () => {
   const [selected, setSelected] = useState("Account ID");
@@ -21,18 +22,21 @@ const CostExplorer = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
+  const [filterOptions, setFilterOptions] = useState([]);
+
+  const [draftFilters, setDraftFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState({});
 
   const remainingOptions = groupByOptions.filter(
     (option) => option !== selected
   );
-
   const visibleOptions = remainingOptions.slice(0, 6);
   const moreOptions = remainingOptions.slice(6);
 
   const chartOptions = [
-    { type: "bar", icon: BarChartOutlinedIcon, name: "mscolumn2d" },
-    { type: "line", icon: TimelineOutlinedIcon, name: "msline" },
-    { type: "column", icon: LeaderboardOutlinedIcon, name: "stackedcolumn2d" },
+    { type: "bar", icon: BarChartOutlinedIcon },
+    { type: "line", icon: TimelineOutlinedIcon },
+    { type: "column", icon: LeaderboardOutlinedIcon },
   ];
 
   const chartMap = {
@@ -42,28 +46,81 @@ const CostExplorer = () => {
   };
 
   const handleDateApply = ({ startDate, endDate }) => {
-    console.log("Applied range:", startDate, endDate);
     setStartDate(startDate);
     setEndDate(endDate);
   };
 
+  const handleAccountChange = (accountId) => {
+    let updatedFilters = { ...appliedFilters };
 
+    if (accountId) {
+      updatedFilters.ACCOUNT_ID = [accountId];
+    } else {
+      delete updatedFilters.ACCOUNT_ID;
+    }
+
+    setAppliedFilters(updatedFilters);
+    fetchData(updatedFilters);
+  };
+
+  const fetchData = async (filtersToApply = appliedFilters) => {
+    setLoading(true);
+    try {
+      const apiGroupBy = groupByApiMap[selected];
+      const reportData = await fetchCostReport(
+        startDate,
+        endDate,
+        apiGroupBy,
+        filtersToApply
+      );
+      setData(reportData);
+    } catch (error) {
+      console.error("Error fetching cost report:", error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
+    fetchData();
+  }, [startDate, endDate, selected]);
+
+  useEffect(() => {
+    const loadFilters = async () => {
       try {
-        const apiGroupBy = groupByApiMap[selected];
-        const reportData = await fetchCostReport(startDate, endDate,apiGroupBy);
-        setData(reportData);
-      } catch (error) {
-        console.error("Error fetching cost report:", error);
+        const res = await fetchFilters();
+
+        const formattedFilters = Object.entries(res).map(([key, values]) => ({
+          label: key,
+          values: values,
+        }));
+
+        setFilterOptions(formattedFilters);
+      } catch (err) {
+        console.error("Failed to load filters", err);
       }
-      setLoading(false);
     };
 
-    getData();
-  }, [startDate, endDate,selected]);
+    loadFilters();
+  }, []);
+
+  const handleApplyFilter = (label, selectedValues) => {
+    const updatedFilters = { ...appliedFilters, [label]: selectedValues };
+    setAppliedFilters(updatedFilters);
+    fetchData(updatedFilters);
+  };
+
+  const handleResetAllFilters = () => {
+    setDraftFilters({});
+    setAppliedFilters({});
+    fetchData({});
+  };
+
+  const handleCancelFilter = (label) => {
+    setDraftFilters((prev) => ({
+      ...prev,
+      [label]: appliedFilters[label] || [],
+    }));
+  };
 
   return (
     <>
@@ -75,13 +132,13 @@ const CostExplorer = () => {
           How to always be aware of cost changes and history.
         </h5>
       </div>
+      <AccountDropdown onAccountChange={handleAccountChange} />
 
       <div className="m-4 border border-[#E6E6E6]">
         <div className="flex justify-between border-b border-[#E6E6E6] px-4 py-4 bg-[#f8f8f8]">
           <div className="flex items-center text-sm gap-2">
             <p className="font-bold whitespace-nowrap">Group By:</p>
-
-            <div className="border border-[#E6E6E6] rounded-md px-3 py-2 bg-[#0a3ca2] ">
+            <div className="border border-[#E6E6E6] rounded-md px-3 py-2 bg-[#0a3ca2]">
               <p className="text-white font-semibold whitespace-nowrap">
                 {selected}
               </p>
@@ -92,7 +149,7 @@ const CostExplorer = () => {
                 <div
                   key={option}
                   onClick={() => setSelected(option)}
-                  className="cursor-pointer border border-[#cfdde5] rounded-md px-3 py-2 bg-white h-10 "
+                  className="cursor-pointer border border-[#cfdde5] rounded-md px-3 py-2 bg-white h-10"
                 >
                   <p className="text-[#0a3ca2] font-semibold whitespace-nowrap">
                     {option}
@@ -107,7 +164,7 @@ const CostExplorer = () => {
                   onClick={() => setShowMore(!showMore)}
                   className="cursor-pointer border border-[#cfdde5] rounded-md px-3 py-2 bg-white h-10 flex items-center gap-1 text-[#0a3ca2]"
                 >
-                  <p className=" font-semibold">More</p>
+                  <p className="font-semibold">More</p>
                   <ArrowDropDownOutlinedIcon />
                 </div>
 
@@ -142,6 +199,7 @@ const CostExplorer = () => {
             />
           </div>
         </div>
+
         <div className="flex w-full overflow-hidden">
           <div
             className={`flex-1 px-4 py-4 bg-white ${
@@ -172,14 +230,26 @@ const CostExplorer = () => {
             </div>
 
             <div className="border border-[#E6E6E6] rounded-sm px-2 py-2 mt-4">
-              <Chart type={chartMap[selectedChart]} data={data} startDate={startDate} endDate={endDate}/>
+              <Chart
+                type={chartMap[selectedChart]}
+                data={data}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </div>
+
             <div className="border border-[#869bc3] rounded-sm mt-6 bg-[#dbe6f8]">
               <p className="py-4 text-center text-[#1945b7]">
                 We are showing up to 1000 records by cost
               </p>
             </div>
-            <CostTable groupByLabel={selected} data={data} startDate={startDate} endDate={endDate}/>
+
+            <CostTable
+              groupByLabel={selected}
+              data={data}
+              startDate={startDate}
+              endDate={endDate}
+            />
           </div>
 
           <div className={`overflow-hidden ${collapsed ? "w-64" : "w-0"}`}>
@@ -187,14 +257,25 @@ const CostExplorer = () => {
               <div className="h-full bg-white border-l border-[#E6E6E6] p-4">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="font-semibold text-xl">Filters</h2>
-                  <div className="flex text-[#0a3ca2] gap-2 items-center cursor-pointer">
+                  <div
+                    className="flex text-[#0a3ca2] gap-2 items-center cursor-pointer"
+                    onClick={handleResetAllFilters}
+                  >
                     <p className="font-semibold">Reset All</p>
                     <RestartAltOutlinedIcon />
                   </div>
                 </div>
 
-                {filters.map((filter, index) => (
-                  <FilterItem key={index} label={filter.label} />
+                {filterOptions.map((filter, index) => (
+                  <FilterItem
+                    key={index}
+                    label={filter.label}
+                    values={filter.values}
+                    draftFilters={draftFilters}
+                    setDraftFilters={setDraftFilters}
+                    onApplyFilter={handleApplyFilter}
+                    onCancelFilter={handleCancelFilter}
+                  />
                 ))}
               </div>
             )}

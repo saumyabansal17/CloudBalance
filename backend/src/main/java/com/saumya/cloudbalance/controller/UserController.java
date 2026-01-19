@@ -7,6 +7,7 @@ import com.saumya.cloudbalance.dto.UpdateUserRequestDto;
 import com.saumya.cloudbalance.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.snowflake.client.jdbc.internal.google.rpc.context.AttributeContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,8 +28,8 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN','READ-ONLY')")
     @GetMapping
-    public ResponseEntity<List<GetUserResponseDto>> getAllUsers(){
-        List<GetUserResponseDto> res=userService.getAllUsers();
+    public ResponseEntity<List<GetUserResponseDto>> getAllUsers(Authentication authentication){
+        List<GetUserResponseDto> res=userService.getAllUsers(authentication);
         return ResponseEntity.ok(res);
     }
 

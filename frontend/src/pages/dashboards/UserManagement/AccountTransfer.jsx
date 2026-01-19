@@ -22,7 +22,6 @@ const AccountTransfer = ({ id, mode, associatedIds, setAssociatedIds }) => {
     return all.filter((acc) => !associatedIds.has(acc.id));
   };
 
-  // Move from left to right
   const moveRight = () => {
     const moving = available.filter((acc) =>
       selectedAvailable.includes(acc.id)

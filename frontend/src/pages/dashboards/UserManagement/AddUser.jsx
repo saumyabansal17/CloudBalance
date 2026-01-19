@@ -146,30 +146,13 @@ const AddUser = () => {
               />
             </div>
 
-            {/* <div className="text-left">
-            <label htmlFor="confirm-password" className="font-medium">
-              Confirm Password <span className="text-red-500">*</span>
-            </label>
-            <br />
-            <input
-              type="confirm-password"
-              name="confirm-password"
-              id="confirm-password"
-              onChange={handleChange}
-              value={formData.confirmPassword}
-              placeholder="Enter Password"
-              className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
-              required
-            />
-          </div> */}
           </div>
           {formData.roleId === 3 && (
             <div className="mb-8">
-              <AccountTransfer mode="ADD" associatedIds={associatedIds} setAssociatedIds={setAssociatedIds}/>
+              <AccountTransfer mode="ADD"associatedIds={associatedIds} setAssociatedIds={setAssociatedIds}/>
             </div>
           )}
 
-          {/* <ManageAccount/> */}
           <div className="mt-8 text-right">
             <button
               type="button"

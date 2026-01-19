@@ -1,6 +1,5 @@
 package com.saumya.cloudbalance.entity;
 
-//import com.saumya.cloudbalance.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

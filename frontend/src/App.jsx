@@ -1,5 +1,5 @@
 // import "./App.css";
-import React from "react"; 
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -36,14 +36,14 @@ const App = () => {
 
   return (
     <>
-      <ToastContainer autoclose={1500}/>
+      <ToastContainer autoclose={1500} />
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route
-            path="/dashboard"           
+            path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={["ADMIN", "CUSTOMER", "READ-ONLY"]}>
                 <SidebarContextProvider>
                   <DashboardLayout />
                 </SidebarContextProvider>
@@ -52,17 +52,68 @@ const App = () => {
           >
             <Route
               index
-              // element={<Navigate to="/dashboard/user-management" replace />}
-              element={<DashboardLayout/>}
+              element={
+                <ProtectedRoute
+                  allowedRoles={["ADMIN", "CUSTOMER", "READ-ONLY"]}
+                >
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
             />
             <Route path="user-management">
-              <Route index element={<UserManagement />} />
-              <Route path="add-user" element={<AddUser />} />
-              <Route path="edit-user" element={<EditUser />} />
+              <Route
+                index
+                element={
+                  <ProtectedRoute allowedRoles={["ADMIN", "READ-ONLY"]}>
+                    <UserManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="add-user"
+                element={
+                  <ProtectedRoute allowedRoles={["ADMIN"]}>
+                    <AddUser />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="edit-user"
+                element={
+                  <ProtectedRoute allowedRoles={["ADMIN"]}>
+                    <EditUser />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
-            <Route path="cost-explorer" element={<CostExplorer />} />
-            <Route path="onboarding" element={<Onboarding />} />
-            <Route path="aws-services" element={<AwsServices />} />
+            <Route
+              path="cost-explorer"
+              element={
+                <ProtectedRoute
+                  allowedRoles={["ADMIN", "CUSTOMER", "READ-ONLY"]}
+                >
+                  <CostExplorer />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="onboarding"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN"]}>
+                  <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="aws-services"
+              element={
+                <ProtectedRoute
+                  allowedRoles={["ADMIN", "CUSTOMER", "READ-ONLY"]}
+                >
+                  <AwsServices />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           <Route path="*" element={<h1>404 Page Not Found</h1>} />
         </Routes>

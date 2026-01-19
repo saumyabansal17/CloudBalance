@@ -144,69 +144,92 @@ export const groupByApiMap = {
 };
 
 
-export const filters = [
-    { label: "Service" },
-    { label: "Instance Type" },
-    { label: "Account ID" },
-    { label: "Usage Type" },
-    { label: "Platform" },
-    { label: "Region" },
-    { label: "Usage Type Group" },
-    { label: "Purchase Option" },
-    { label: "API Operation" },
-    { label: "Resource" },
-  ];
+export const filters=[{
+    label: "INSTANCE_TYPE",
+    values: [
+      "c4.large",
+      "c4.xlarge",
+      "c4.8xlarge",
+      "c5.large",
+      "c5.xlarge",
+      "c5.2xlarge",
+      "c5.4xlarge",
+      "c5.9xlarge",
+      "No Instance Type",
+    ],
+  },
+  {
+    label: "SERVICE",
+    values: [
+      "Amazon EC2",
+      "Amazon S3",
+      "Amazon RDS",
+      "Amazon CloudFront",
+      "Amazon DynamoDB",
+      "Amazon Lambda",
+    ],
+  },
+  {
+    label: "REGION",
+    values: [
+      "us-east-1",
+      "us-west-2",
+      "ap-south-1",
+      "eu-west-1",
+      "ap-northeast-1",
+    ],
+  },
+];
 
+// export const tableData = {
+//   columns: [
+//     "May 2025",
+//     "Jun 2025",
+//     "Jul 2025",
+//     "Aug 2025",
+//     "Sep 2025",
+//     "Oct 2025",
+//     "Nov 2025",
+//     "Dec 2025",
+//   ],
+//   rows: [
+//     {
+//       key: "831059512818",
+//       values: [108088.47, 135308.22, 140468.46, 140112.35, 130312.49, 118640.07, 124029.83, 85493.53],
+//       total: 982453.43,
+//     },
+//     {
+//       key: "039612865345",
+//       values: [1900.58, 2570.53, 3316.24, 3116.31, 3757.38, 5007.87, 5190.54, 4261.76],
+//       total: 29121.21,
+//     },
+//   ],
+//   grandTotal: [112575.82, 140810.90, 146451.69, 145951.10, 136922.58, 126343.99, 131514.16, 91081.42],
+//   grandSum: 1031651.66,
+// };
 
-export const tableData = {
-  columns: [
-    "May 2025",
-    "Jun 2025",
-    "Jul 2025",
-    "Aug 2025",
-    "Sep 2025",
-    "Oct 2025",
-    "Nov 2025",
-    "Dec 2025",
-  ],
-  rows: [
-    {
-      key: "831059512818",
-      values: [108088.47, 135308.22, 140468.46, 140112.35, 130312.49, 118640.07, 124029.83, 85493.53],
-      total: 982453.43,
-    },
-    {
-      key: "039612865345",
-      values: [1900.58, 2570.53, 3316.24, 3116.31, 3757.38, 5007.87, 5190.54, 4261.76],
-      total: 29121.21,
-    },
-  ],
-  grandTotal: [112575.82, 140810.90, 146451.69, 145951.10, 136922.58, 126343.99, 131514.16, 91081.42],
-  grandSum: 1031651.66,
-};
-
-export const costData = {
-  columns: [
-    "May 2025",
-    "Jun 2025",
-    "Jul 2025",
-    "Aug 2025",
-    "Sep 2025",
-    "Oct 2025",
-    "Nov 2025",
-    "Dec 2025",
-  ],
-  rows: [
-    {
-      key: "831059512818",
-      values: [108088.47, 135308.22, 140468.46, 140112.35, 130312.49, 118640.07, 124029.83, 85493.53],
-    },
-    {
-      key: "039612865345",
-      values: [1900.58, 2570.53, 3316.24, 3116.31, 3757.38, 5007.87, 5190.54, 4261.76],
-    },
-  ],
-};
+// export const costData = {
+//   columns: [
+//     "May 2025",
+//     "Jun 2025",
+//     "Jul 2025",
+//     "Aug 2025",
+//     "Sep 2025",
+//     "Oct 2025",
+//     "Nov 2025",
+//     "Dec 2025",
+//   ],
+//   rows: [
+//     {
+//       key: "831059512818",
+//       values: [108088.47, 135308.22, 140468.46, 140112.35, 130312.49, 118640.07, 124029.83, 85493.53],
+//     },
+//     {
+//       key: "039612865345",
+//       values: [1900.58, 2570.53, 3316.24, 3116.31, 3757.38, 5007.87, 5190.54, 4261.76],
+//     },
+//   ],
+// };
 
 // utils/dateUtils.js
 export const getMonthsBetween = (start, end) => {
@@ -219,7 +242,7 @@ export const getMonthsBetween = (start, end) => {
   while (current <= endDate) {
     const monthStr = `${current.getFullYear()}-${(current.getMonth() + 1)
       .toString()
-      .padStart(2, "0")}`; // format YYYY-MM
+      .padStart(2, "0")}`; 
     months.push(monthStr);
     current.setMonth(current.getMonth() + 1);
   }

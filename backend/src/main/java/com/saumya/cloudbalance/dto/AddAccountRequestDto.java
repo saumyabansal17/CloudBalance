@@ -15,10 +15,10 @@ import lombok.Setter;
 @Setter
 public class AddAccountRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "ARN number should not be empty")
     String awsArn;
 
-    @NotBlank
+    @NotBlank(message = "Account Name should not be empty")
     String accountName;
 
     @NotNull

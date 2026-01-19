@@ -8,6 +8,7 @@ import com.saumya.cloudbalance.repository.AccountRepository;
 import com.saumya.cloudbalance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,5 +83,26 @@ public class AccountService {
                 )
                 .toList();
     }
+
+
+    public List<AccountDetailsDto> getAccountInfo(Authentication authentication) {
+        String email=authentication.getName();
+        Long id = userRepository.findUserIdByEmail(email)
+                .orElseThrow(() -> new CustomException("User not found",HttpStatus.NOT_FOUND));
+
+        System.out.println(id);
+        List<Account> accounts = accountRepository.findByUsers_Id(id);
+        System.out.println(accounts);
+        return accounts.stream()
+                .map(account ->
+                        AccountDetailsDto.builder()
+                                .accountName(account.getAccountName())
+                                .awsId(account.getAwsId())
+                                .build()
+                )
+                .toList();
+    }
+
+
 
 }

@@ -11,6 +11,5 @@ const SidebarContextProvider = ({ children }) => {
   );
 };
 
-// export {SidebarContext,SidebarContextProvider}
 
 export default SidebarContextProvider

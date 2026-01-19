@@ -51,7 +51,6 @@ const Onboarding = () => {
       console.log("payload", payload);
       console.log("Account created:", accounts.data);
       toast.success("Account onboarded successfully!");
-      // navigate("/dashboard/user-management", { replace: true });
     } catch (error) {
       console.log(error);
     }

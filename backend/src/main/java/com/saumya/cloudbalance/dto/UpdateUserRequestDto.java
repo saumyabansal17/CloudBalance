@@ -30,5 +30,4 @@ public class UpdateUserRequestDto {
 
     List<Long> accountIds;
 
-//    String role;
 }

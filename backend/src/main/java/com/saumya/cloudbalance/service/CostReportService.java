@@ -1,6 +1,7 @@
 package com.saumya.cloudbalance.service;
 
 import com.saumya.cloudbalance.dto.MonthlyCostDto;
+import com.saumya.cloudbalance.enums.GroupField;
 import com.saumya.cloudbalance.repository.CostReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,40 +17,52 @@ public class CostReportService {
 
     private final CostReportRepository repository;
 
-    private BigDecimal toBigDecimal(Object value) {
-        return value == null
-                ? BigDecimal.ZERO
-                : BigDecimal.valueOf(((Number) value).doubleValue());
-    }
-
-    public List<MonthlyCostDto> getMonthlyCostByService(
+    public List<MonthlyCostDto> getMonthlyCost(
             String startDate,
             String endDate,
-            String groupBy
+            GroupField groupBy,
+            Map<String, List<String>> filters
     ) {
 
         List<Map<String, Object>> rows =
-                repository.fetchMonthlyCost(startDate, endDate,groupBy);
+                repository.fetchMonthlyCost(startDate, endDate, groupBy, filters);
 
-        LinkedHashMap<String, LinkedHashMap<String, BigDecimal>> serviceMap =
+        LinkedHashMap<String, LinkedHashMap<String, BigDecimal>> result =
                 new LinkedHashMap<>();
 
         for (Map<String, Object> row : rows) {
-
             String month = row.get("MONTH").toString();
-            String service = row.get("GROUP_KEY").toString();
-            BigDecimal cost = toBigDecimal(row.get("TOTAL_COST"));
+            String key = row.get("GROUP_KEY").toString();
+            BigDecimal cost = row.get("TOTAL_COST") == null
+                    ? BigDecimal.ZERO
+                    : new BigDecimal(row.get("TOTAL_COST").toString());
 
-            serviceMap
-                    .computeIfAbsent(service, k -> new LinkedHashMap<>())
+            result.computeIfAbsent(key, k -> new LinkedHashMap<>())
                     .put(month, cost);
         }
 
-        return serviceMap.entrySet()
+        return result.entrySet()
                 .stream()
                 .map(e -> new MonthlyCostDto(e.getKey(), e.getValue()))
                 .toList();
     }
+
+    public Map<String, List<String>> getAllFilterOptions(boolean isCustomer) {
+
+        Map<String, List<String>> filters = new LinkedHashMap<>();
+
+        for (GroupField field : GroupField.values()) {
+
+            if (isCustomer && field == GroupField.ACCOUNT_ID) {
+                continue;
+            }
+
+            filters.put(
+                    field.name(),
+                    repository.fetchDistinctValues(field.name())
+            );
+        }
+
+        return filters;
+    }
 }
-
-

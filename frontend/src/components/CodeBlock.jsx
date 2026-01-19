@@ -10,7 +10,6 @@ const CodeBlock = ({ code,className="" }) => {
     await navigator.clipboard.writeText(code);
     setCopied(true);
     toast.success("Data copied");
-    // setTimeout(() => setCopied(false), 1500);
   };
 
   return (

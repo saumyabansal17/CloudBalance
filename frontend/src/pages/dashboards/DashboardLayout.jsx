@@ -11,24 +11,23 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // const role = localStorage.getItem("hasRole");
-  
+
   const hasRedirected = useRef(false);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.auth);
-  const role=user?.role;
+  const role = user?.role;
 
   useEffect(() => {
-    if (!user) {
+    if (!user && localStorage.getItem("token")) {
       dispatch(fetchUserProfile());
     }
   }, [dispatch, user]);
 
-
   useEffect(() => {
     console.log("dashboard mounted");
-    if (location.pathname === "/dashboard" &&
-      !hasRedirected.current) {
+    if (!role) return;
+    if (location.pathname === "/dashboard" && !hasRedirected.current) {
       hasRedirected.current = true;
       if (role === "ADMIN" || role === "READ-ONLY") {
         navigate("/dashboard/user-management", { replace: true });
@@ -36,7 +35,6 @@ const DashboardLayout = () => {
         navigate("/dashboard/cost-explorer", { replace: true });
       }
     }
-   
   }, [location.pathname, role, navigate]);
 
   if (loading || !user) {
@@ -50,7 +48,7 @@ const DashboardLayout = () => {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <Header/>
+        <Header />
 
         <div className="flex flex-1">
           <Sidebar className="h-screen overflow-hidden" />

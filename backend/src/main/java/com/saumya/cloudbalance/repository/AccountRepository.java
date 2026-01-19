@@ -20,5 +20,4 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     long countByAwsIdIn(List<Long> awsIds);
 
-
 }

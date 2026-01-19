@@ -11,8 +11,7 @@ import java.util.LinkedHashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MonthlyCostDto {
-    private String service;
+    private String groupBy;
 
-    // Month -> Cost (order preserved)
     private LinkedHashMap<String, BigDecimal> monthlyCost;
 }
