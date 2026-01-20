@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { getMonthsBetween } from "./utils";
 
 const CostTable = ({ groupByLabel, data, startDate, endDate }) => {
+  
   const tableData = useMemo(() => {
     if (!data || data.length === 0)
       return { columns: [], rows: [], grandTotal: [], grandSum: 0 };

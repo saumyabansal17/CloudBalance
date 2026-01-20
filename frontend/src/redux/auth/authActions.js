@@ -1,5 +1,3 @@
-// authActions.js
-import axios from "axios";
 import { getProfile } from "../../api/api";
 
 export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST";

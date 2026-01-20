@@ -18,6 +18,6 @@ public class Role {
     int id;
 
     @Column(nullable = false)
-            @NotBlank
+            @NotBlank(message = "Role should not be empty")
     String role;
 }

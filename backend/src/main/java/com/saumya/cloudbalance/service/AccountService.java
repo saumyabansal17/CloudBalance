@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,25 +22,26 @@ public class AccountService {
     private final UserRepository userRepository;
 
     public String addAccount(AddAccountRequestDto req){
-        if (accountRepository.existsByAwsARN(req.getAwsArn())) {
-            throw new CustomException(
-                    "AWS ARN already exists",
-                    HttpStatus.CONFLICT
-            );
-        }
 
-        if (accountRepository.existsByAccountName(req.getAccountName())) {
-            throw new CustomException(
-                    "Account name already exists",
-                    HttpStatus.CONFLICT
-            );
-        }
+        List<Account> existingAccount =
+                accountRepository.findByAwsARNOrAccountNameOrAwsId(
+                        req.getAwsArn(),
+                        req.getAccountName(),
+                        req.getAccountId()
+                );
 
-        if (accountRepository.existsByAwsId(req.getAccountId())) {
-            throw new CustomException(
-                    "AWS Account ID already exists",
-                    HttpStatus.CONFLICT
-            );
+        for( Account acc:existingAccount ){
+            if (acc.getAwsARN().equals(req.getAwsArn())) {
+                throw new CustomException("AWS ARN already exists", HttpStatus.CONFLICT);
+            }
+
+            if (acc.getAccountName().equals(req.getAccountName())) {
+                throw new CustomException("Account name already exists", HttpStatus.CONFLICT);
+            }
+
+            if (acc.getAwsId().equals(req.getAccountId())) {
+                throw new CustomException("AWS Account ID already exists", HttpStatus.CONFLICT);
+            }
         }
 
         Account newAcc = Account.builder()

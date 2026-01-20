@@ -35,8 +35,6 @@ const AddUser = () => {
     };
     try {
       const users = await addUser(payload);
-      console.log("payload",payload);
-      console.log("User created:", users.data);
       toast.success("User created successfully!");
       navigate("/dashboard/user-management", { replace: true });
     } catch (error) {
@@ -70,7 +68,7 @@ const AddUser = () => {
                 onChange={handleChange}
                 value={formData.firstName}
                 placeholder="Enter First Name"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -87,7 +85,7 @@ const AddUser = () => {
                 onChange={handleChange}
                 value={formData.lastName}
                 placeholder="Enter Last Name"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -104,7 +102,7 @@ const AddUser = () => {
                 onChange={handleChange}
                 value={formData.email}
                 placeholder="Enter Email ID"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -119,7 +117,7 @@ const AddUser = () => {
                 id="role"
                 onChange={handleChange}
                 value={formData.roleId}
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1 bg-gray-100"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1 bg-gray-100"
                 required
               >
                 <option value="">Select Role</option>
@@ -141,7 +139,7 @@ const AddUser = () => {
                 onChange={handleChange}
                 value={formData.password}
                 placeholder="Enter Password"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -157,7 +155,7 @@ const AddUser = () => {
             <button
               type="button"
               onClick={handleCancel}
-              className="border-1 text-black px-6 py-2 mr-2 rounded-sm hover:bg-gray-50 cursor-pointer"
+              className="border text-black px-6 py-2 mr-2 rounded-sm hover:bg-gray-50 cursor-pointer"
             >
               Cancel
             </button>

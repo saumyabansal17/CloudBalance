@@ -25,27 +25,27 @@ public class User implements UserDetails {
     Long id;
 
     @Column(name="firstname",nullable = false)
-            @NotBlank
+            @NotBlank(message = "Firstname should not be empty")
     String firstName;
 
     @Column(name="lastname",nullable = false)
-            @NotBlank
+            @NotBlank(message = "Lastname should not be empty")
     String lastName;
 
     @Column(nullable = false)
-            @Email
-            @NotBlank
+            @Email(message = "Please provide valid email address")
+            @NotBlank(message = "Email address should not be empty")
     String email;
 
     @Column(nullable = false)
-            @NotBlank
+            @NotBlank(message = "Password should not be empty")
     String password;
 
     LocalDateTime lastLoginTime;
 
     @ManyToOne
     @JoinColumn(name="role_id",nullable = false)
-            @NotNull
+            @NotNull(message = "Role should not be empty")
     Role role;
 
     @ManyToMany

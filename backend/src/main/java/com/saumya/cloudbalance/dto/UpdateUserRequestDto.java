@@ -3,29 +3,25 @@ package com.saumya.cloudbalance.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUserRequestDto {
-    @NotBlank
+    @NotBlank(message = "Firstname should not be empty")
     String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Lastname should not be empty")
     String lastName;
 
-    @NotBlank
-            @Email
+    @NotBlank(message = "Email address should not be empty")
+            @Email(message = "Please enter the valid email address")
     String email;
 
-    @NotNull
+    @NotNull(message = "Role should not be empty")
     int roleId;
 
     List<Long> accountIds;

@@ -10,7 +10,6 @@ import { fetchUserProfile } from "../../redux/auth/authActions";
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const role = localStorage.getItem("hasRole");
 
   const hasRedirected = useRef(false);
   const dispatch = useDispatch();
@@ -25,7 +24,6 @@ const DashboardLayout = () => {
   }, [dispatch, user]);
 
   useEffect(() => {
-    console.log("dashboard mounted");
     if (!role) return;
     if (location.pathname === "/dashboard" && !hasRedirected.current) {
       hasRedirected.current = true;

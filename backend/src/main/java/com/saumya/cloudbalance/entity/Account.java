@@ -22,20 +22,21 @@ public class Account {
             @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long Id;
 
-    @NotBlank
+    @NotBlank(message = "ARN number should not be empty")
     @Column(nullable = false,unique=true)
     String awsARN;
 
-    @NotBlank
+    @NotBlank(message = "Account Name should not be empty")
     @Column(nullable = false,unique = true)
     String accountName;
 
-    @NotNull
+    @NotNull(message = "Account Id should not be empty")
             @Column(nullable = false,unique = true)
-    @Min(1000000000L)
-    @Max(9999999999L)
+    @Min(value = 1000000000L, message = "Account Id must be exactly 10 digits")
+    @Max(value = 9999999999L, message = "Account Id must be exactly 10 digits")
     Long awsId;
 
     @ManyToMany(mappedBy = "accounts")
+    @Builder.Default
     List<User> users=new ArrayList<>();
 }

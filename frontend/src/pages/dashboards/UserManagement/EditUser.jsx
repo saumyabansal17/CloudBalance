@@ -19,8 +19,6 @@ const EditUser = () => {
     roleId: state?.roleId || null,
   });
 
-  // console.log(state);
-  console.log(id);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +27,7 @@ const EditUser = () => {
       [name]: name === "roleId" ? Number(value) : value,
     }));
   };
-  // console.log("formdata: ",formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -38,14 +36,12 @@ const EditUser = () => {
     };
     try {
       const users = await editUser(id, payload);
-      console.log("User edited:", users.data);
       toast.success("User edited successfully!");
       navigate("/dashboard/user-management", { replace: true });
     } catch (error) {
       console.log(error);
     }
 
-    // console.log("User created:", state);
   };
 
   const handleCancel = () => {
@@ -73,7 +69,7 @@ const EditUser = () => {
                 onChange={handleChange}
                 value={formData.firstName}
                 placeholder="Enter First Name"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -90,7 +86,7 @@ const EditUser = () => {
                 onChange={handleChange}
                 value={formData.lastName}
                 placeholder="Enter Last Name"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -107,7 +103,7 @@ const EditUser = () => {
                 onChange={handleChange}
                 value={formData.email}
                 placeholder="Enter Email ID"
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               />
             </div>
@@ -125,7 +121,7 @@ const EditUser = () => {
                 id="role"
                 onChange={handleChange}
                 value={formData.roleId}
-                className="w-full border-1 border-gray-300 rounded-sm px-3 py-2 mt-1"
+                className="w-full border border-gray-300 rounded-sm px-3 py-2 mt-1"
                 required
               >
                 {/* <option value="">{role}</option> */}
@@ -151,7 +147,7 @@ const EditUser = () => {
             <button
               type="button"
               onClick={handleCancel}
-              className="border-1 text-black px-6 py-2 mr-2 rounded-sm hover:bg-gray-50 cursor-pointer"
+              className="border text-black px-6 py-2 mr-2 rounded-sm hover:bg-gray-50 cursor-pointer"
             >
               Cancel
             </button>

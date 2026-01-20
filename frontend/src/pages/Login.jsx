@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/Cloudkeeper_New.svg";
@@ -22,13 +22,9 @@ const Login = () => {
 
     try {
       const res = await login(userData);
-      console.log(res);
       toast.success("Loggin succesful");
       
-      // localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("token",res.data.token);
-      // localStorage.setItem("hasRole", res.data.role);
-      // localStorage.setItem("name",res.data.name);
       dispatch(fetchUserProfile());
       navigate("/dashboard",{replace:true});
 
@@ -51,11 +47,9 @@ const Login = () => {
     }));
   };
 
-  // useEffect(() => {
   //   if (localStorage.getItem("isAuthenticated") === "true") {
   //     navigate("/dashboard/user-management");
   //   }
-  // }, []);
 
   return (
     <>
@@ -93,7 +87,6 @@ const Login = () => {
 
             <button
               type="submit"
-              // onClick={handleLogin}
               className="bg-[#4398d7] mt-3 text-white w-full h-13 py-2 rounded-sm cursor-pointer hover:shadow-[6px_13px_15px_#0a3ca24a] transition"
             >
               LOGIN

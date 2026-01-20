@@ -4,7 +4,6 @@ import {useSelector} from "react-redux"
 import Loader from '../components/Loader';
 
 const ProtectedRoute = ({ children,allowedRoles}) => {
-  // return (localStorage.getItem("isAuthenticated") === "true"? children : <Navigate to="/" replace/>);
   const {user,loading} = useSelector((state) => state.auth);
   const role=user?.role;
   const token = localStorage.getItem("token");

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account,Long> {
@@ -19,5 +20,11 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     boolean existsByAwsId(Long awsId);
 
     long countByAwsIdIn(List<Long> awsIds);
+
+    List<Account> findByAwsARNOrAccountNameOrAwsId(
+            String awsARN,
+            String accountName,
+            Long awsId
+    );
 
 }

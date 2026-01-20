@@ -2,19 +2,16 @@ package com.saumya.cloudbalance.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequestDto {
-    @Email
+    @Email(message = "Please enter the valid email address")
+            @NotBlank(message = "Email address should not be empty")
     String email;
 
-    @NotBlank
+    @NotBlank(message = "Password should not be empty")
     String password;
 }

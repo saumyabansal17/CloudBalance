@@ -48,13 +48,10 @@ const Onboarding = () => {
     };
     try {
       const accounts = await addAccount(payload);
-      console.log("payload", payload);
-      console.log("Account created:", accounts.data);
       toast.success("Account onboarded successfully!");
     } catch (error) {
       console.log(error);
     }
-    console.log("Form Submiited", payload);
   };
 
   return (

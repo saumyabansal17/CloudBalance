@@ -1,5 +1,7 @@
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { LOGOUT } from "../redux/auth/authActions";
 
 const API_BASE = "http://localhost:8080/api";
 
@@ -35,7 +37,7 @@ privateApi.interceptors.response.use(
       toast.error("Session expired. Please login again.");
       localStorage.clear();
       setTimeout(() => {
-        // window.location.href = "/";
+        window.location.href = "/";
       }, 2000);
     } 
     else if (status === 403) {

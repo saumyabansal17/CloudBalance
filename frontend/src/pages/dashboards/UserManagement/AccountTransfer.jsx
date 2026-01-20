@@ -13,7 +13,6 @@ const AccountTransfer = ({ id, mode, associatedIds, setAssociatedIds }) => {
 
   const [selectedAvailable, setSelectedAvailable] = useState([]);
   const [selectedAssociated, setSelectedAssociated] = useState([]);
-  console.log(available);
 
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +52,6 @@ const AccountTransfer = ({ id, mode, associatedIds, setAssociatedIds }) => {
     setSelectedAssociated([]);
   };
 
-  console.log(id);
   useEffect(() => {
     const loadData = async () => {
       try {

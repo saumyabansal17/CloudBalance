@@ -1,11 +1,12 @@
-// import "./App.css";
 import React from "react";
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+
 import Login from "./pages/Login";
 import UserManagement from "./pages/dashboards/UserManagement/UserManagementLayout";
 import CostExplorer from "./pages/dashboards/CostExplorer/CostExplorer";
@@ -19,20 +20,6 @@ import DashboardLayout from "./pages/dashboards/DashboardLayout";
 import AwsServices from "./pages/dashboards/AwsServices/AwsServices";
 
 const App = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(() => {
-  //   return localStorage.getItem("isAuthenticated") === "true";
-  // });
-
-  // const handleLogin = ()=>{
-
-  //   console.log("app");
-  //   setIsAuthenticated(true);
-  // }
-
-  // const handleLogout=()=>{
-
-  //    setIsAuthenticated(false);
-  // }
 
   return (
     <>

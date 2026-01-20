@@ -12,7 +12,6 @@ const Header = () => {
   const navigate = useNavigate();
   const {user}=useSelector((state)=>state.auth);
   const name=user?.name.toUpperCase();
-  console.log("userredux",user);
 
   const {isOpen, setIsOpen} = useContext(SidebarContext)
   const handleClick=()=>{
@@ -36,7 +35,7 @@ const Header = () => {
         
         <div className="flex gap-4">
         <div className="flex gap-2 items-center cursor-pointer group">
-          <div className="border-1 rounded-3xl text-[#0a3ca2] p-1 bg-blue-100 group-hover:bg-[#0a3ca2] ">
+          <div className="border rounded-3xl text-[#0a3ca2] p-1 bg-blue-100 group-hover:bg-[#0a3ca2] ">
             <GroupOutlinedIcon className="text-[#0a3ca2] group-hover:text-white"/>
           </div>
           
@@ -47,7 +46,7 @@ const Header = () => {
         </div>
         <button
           onClick={handleLogout}
-          className="bg-white flex cursor-pointer items-center justify-between text-[#0a3ca2] border-1 border-[#0a3ca2] gap-2 px-3 py-1 rounded-sm"
+          className="bg-white flex cursor-pointer items-center justify-between text-[#0a3ca2] border border-[#0a3ca2] gap-2 px-3 py-1 rounded-sm"
         >
           <img src={Logout} alt="Logout" />
           <div className="font-semibold text-[16px] leading-6">
